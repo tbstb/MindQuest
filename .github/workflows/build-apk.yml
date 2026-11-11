@@ -42,9 +42,13 @@ jobs:
           "$SDKMANAGER" --install "platforms;android-35" "build-tools;35.0.0"
   
 
-      - name: Check project assets
+      
+      - name: Fix Kotlin import and check assets
         working-directory: project
-        run: python3 check_project.py
+        run: |
+          sed -i '/^import androidx.compose.runtime\.\*$/a import androidx.compose.runtime.saveable.rememberSaveable' app/src/main/java/com/mindquest/app/ui/App.kt
+          python3 check_project.py
+  
 
       - name: Build debug APK
         working-directory: project
